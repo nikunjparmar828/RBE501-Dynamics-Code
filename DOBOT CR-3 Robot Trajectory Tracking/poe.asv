@@ -1,0 +1,43 @@
+% RBE 501 - Robot Dynamics - Sping 2022
+% Midterm Exam
+% Worcester Polytechnic Institute
+%
+% Student: ***Nikunj Parmar***
+clear, clc, close all
+addpath('utils');
+plotOn = true;
+nTests = 20; 
+%% *** ENTER THE LAST DIGIT OF YOUR WPI ID BELOW: ***
+digit = 2;
+
+%% Create the manipulator
+robot = make_robot(digit);
+n = robot.n;
+qlim = robot.qlim;
+robot.teach(zeros(1,6))
+
+
+%% Calculate the forward kinematics using the Product of Exponentials
+% Let us calculate the screw axis for each joint
+% Put all the axes into a 6xn matrix S, where n is the number of joints
+S = [0 0 1 0 0 0;
+     1 0 0 0 0.1348 0;
+    1 0 0 0 0.4086 0;
+    1 0 0 0 0.6386 0;
+    0 0 1 0 -0.1283 0;
+    1 0 0 0 0.7546 0]';
+
+% Let us also calculate the homogeneous transformation matrix M for the
+% home configuration
+
+R = [0 0 1;
+    -1 0 0;
+    0 -1 0];
+p = [0.2333 0 0.7546]';
+
+M = [R,p;0 0 0 1];
+
+%%---------------------------------------------------------------------------
+
+T = fkine(S,M,q);
+
